@@ -183,7 +183,6 @@ class TextParseNode implements ParseNode
      */
     public function getBinaryContent(): ?StreamInterface
     {
-        echo "Hello world";
         return Utils::streamFor($this->content);
     }
 
