@@ -117,7 +117,7 @@ class TextSerializationWriter implements SerializationWriter
     /**
      * @inheritDoc
      */
-    public function writeObjectValue(?string $key, ?Parsable $value): void
+    public function writeObjectValue(?string $key, ?Parsable $value, Parsable ...$additionalValuesToMerge): void
     {
         throw new \RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
     }
