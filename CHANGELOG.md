@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+## [0.7.1]
+
+### Added
+- Adds CHANGELOG.
+
+### Changed
+- Disabled PHP-HTTP discovery plugin
 
 ## [0.7.0] - 2023-06-29
 
