@@ -8,11 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Adds CHANGELOG.
 
 ### Changed
 
-## [0.7.1]
+## [0.8.0] - 2023-10-30
+
+### Changed
+- Bump Kiota Abstractions dependency
+
+## [0.7.1] - 2023-10-30
 
 ### Added
 - Adds CHANGELOG.
