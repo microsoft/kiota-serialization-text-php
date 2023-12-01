@@ -12,7 +12,7 @@ run `composer require microsoft/kiota-serialization-text` or add the following t
 ```Shell
 {
     "require": {
-        "microsoft/kiota-serialization-text": "^0.1.0"
+        "microsoft/kiota-serialization-text": "^1.0.1"
     }
 }
 ```
