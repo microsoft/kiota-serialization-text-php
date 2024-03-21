@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+ - Updated the Abstractions dependency.
+ - Disable code coverage reporting for PHP versions other than 8.0.
+ - Update CODEOWNERS.
 
 ## [1.0.1]
 
