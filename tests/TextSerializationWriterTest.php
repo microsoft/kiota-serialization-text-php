@@ -2,6 +2,7 @@
 
 namespace Microsoft\Kiota\Serialization\Text\Tests;
 
+use DateInterval;
 use GuzzleHttp\Psr7\Utils;
 use Microsoft\Kiota\Abstractions\Types\Date;
 use Microsoft\Kiota\Abstractions\Types\Time;
@@ -47,6 +48,8 @@ class TextSerializationWriterTest extends TestCase
 
     public function validMethodNamesDataProvider(): array
     {
+        $negInterval = new DateInterval('P1DT10M12S');
+        $negInterval->invert = 1;
         return [
             ['writeBooleanValue', false, 'false'],
             ['writeFloatValue', 1.23, '1.23'],
@@ -56,6 +59,7 @@ class TextSerializationWriterTest extends TestCase
             ['writeDateValue', new Date('2022-05-05'), '2022-05-05'],
             ['writeTimeValue', new Time('22:00:00'), '22:00:00'],
             ['writeDateIntervalValue', new \DateInterval('P1DT22H22M00S'), 'P1DT22H22M'],
+            ['writeDateIntervalValue', $negInterval, '-P1DT10M12S'],
             ['writeBinaryContent', Utils::streamFor('content'), 'content']
         ];
     }
