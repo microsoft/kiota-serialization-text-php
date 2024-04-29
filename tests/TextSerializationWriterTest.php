@@ -55,7 +55,7 @@ class TextSerializationWriterTest extends TestCase
             ['writeEnumValue', new TestEnum('valueA'), TestEnum::VALUE_A],
             ['writeDateValue', new Date('2022-05-05'), '2022-05-05'],
             ['writeTimeValue', new Time('22:00:00'), '22:00:00'],
-            ['writeDateIntervalValue', new \DateInterval('P1DT22H22M00S'), 'P0Y0M1DT22H22M0S'],
+            ['writeDateIntervalValue', new \DateInterval('P1DT22H22M00S'), 'P1DT22H22M'],
             ['writeBinaryContent', Utils::streamFor('content'), 'content']
         ];
     }

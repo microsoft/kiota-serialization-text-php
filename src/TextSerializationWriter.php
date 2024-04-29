@@ -186,9 +186,15 @@ class TextSerializationWriter implements SerializationWriter
      */
     public function writeDateIntervalValue(?string $key, ?DateInterval $value): void
     {
-        if ($value) {
-            $valueString = "P{$value->y}Y{$value->y}M{$value->d}DT{$value->h}H{$value->i}M{$value->s}S";
-            $this->writeStringValue($key, $valueString);
+        if ($value !== null){
+            $year = $value->y > 0 ? "%yY" : "";
+            $month = $value->m > 0 ? "%mM" : "";
+            $day = $value->d > 0 ? '%dD' : "";
+            $hour = $value->h > 0 ? '%hH' : "";
+            $minute = $value->i > 0 ? '%iM' : "";
+            $second = $value->s > 0 ? '%sS' : "";
+            $res = $value->format("%rP$year$month{$day}T{$hour}{$minute}{$second}");
+            $this->writeStringValue($key, $res);
         }
     }
 

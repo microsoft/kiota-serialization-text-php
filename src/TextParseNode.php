@@ -146,7 +146,18 @@ class TextParseNode implements ParseNode
      */
     public function getDateIntervalValue(): ?DateInterval
     {
-        return new DateInterval($this->content);
+        $originalValue = $this->content;
+        $negativeValPosition = strpos($originalValue, '-');
+        $invert = 0;
+        $str = $originalValue;
+        if ($negativeValPosition !== false && $negativeValPosition === 0) {
+            // Invert the interval
+            $invert = 1;
+            $str = substr($originalValue, 1);
+        }
+        $dateInterval = new DateInterval($str);
+        $dateInterval->invert = $invert;
+        return $dateInterval;
     }
 
     /**
