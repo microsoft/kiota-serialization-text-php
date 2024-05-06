@@ -15,6 +15,7 @@ use GuzzleHttp\Psr7\Utils;
 use Microsoft\Kiota\Abstractions\Enum;
 use Microsoft\Kiota\Abstractions\Serialization\Parsable;
 use Microsoft\Kiota\Abstractions\Serialization\ParseNode;
+use Microsoft\Kiota\Abstractions\Serialization\ParseNodeFromStringTrait;
 use Microsoft\Kiota\Abstractions\Types\Date;
 use Microsoft\Kiota\Abstractions\Types\Time;
 use Psr\Http\Message\StreamInterface;
@@ -30,6 +31,7 @@ use Psr\Http\Message\StreamInterface;
  */
 class TextParseNode implements ParseNode
 {
+    use ParseNodeFromStringTrait;
     /**
      * @var string Content of the root node
      */
@@ -146,18 +148,7 @@ class TextParseNode implements ParseNode
      */
     public function getDateIntervalValue(): ?DateInterval
     {
-        $originalValue = $this->content;
-        $negativeValPosition = strpos($originalValue, '-');
-        $invert = 0;
-        $str = $originalValue;
-        if ($negativeValPosition !== false && $negativeValPosition === 0) {
-            // Invert the interval
-            $invert = 1;
-            $str = substr($originalValue, 1);
-        }
-        $dateInterval = new DateInterval($str);
-        $dateInterval->invert = $invert;
-        return $dateInterval;
+        return $this->parseDateIntervalFromString($this->content);
     }
 
     /**
