@@ -12,12 +12,15 @@ namespace Microsoft\Kiota\Serialization\Text;
 use DateInterval;
 use DateTime;
 use GuzzleHttp\Psr7\Utils;
+use InvalidArgumentException;
 use Microsoft\Kiota\Abstractions\Enum;
 use Microsoft\Kiota\Abstractions\Serialization\Parsable;
 use Microsoft\Kiota\Abstractions\Serialization\SerializationWriter;
+use Microsoft\Kiota\Abstractions\Serialization\SerializationWriterToStringTrait;
 use Microsoft\Kiota\Abstractions\Types\Date;
 use Microsoft\Kiota\Abstractions\Types\Time;
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 
 /**
  * Class TextSerializationWriter
@@ -27,6 +30,7 @@ use Psr\Http\Message\StreamInterface;
  */
 class TextSerializationWriter implements SerializationWriter
 {
+    use SerializationWriterToStringTrait;
     /**
      * @var StreamInterface
      */
@@ -64,10 +68,10 @@ class TextSerializationWriter implements SerializationWriter
     public function writeStringValue(?string $key, ?string $value): void
     {
         if ($key) {
-            throw new \InvalidArgumentException('Keys not supported for text/plain content type');
+            throw new InvalidArgumentException('Keys not supported for text/plain content type');
         }
         if ($this->stream->getSize()) {
-            throw new \RuntimeException('A value was already written for this serialization writer. Text content only allows a single value');
+            throw new RuntimeException('A value was already written for this serialization writer. Text content only allows a single value');
         }
         (!$value) ? $this->stream->write('') : $this->stream->write($value);
     }
@@ -102,7 +106,7 @@ class TextSerializationWriter implements SerializationWriter
     public function writeDateTimeValue(?string $key, ?DateTime $value): void
     {
         if ($value) {
-            $this->writeStringValue($key, $value->format(\DateTimeInterface::RFC3339));
+            $this->writeStringValue($key, $this->getDateTimeValueAsString($value));
         }
     }
 
@@ -111,7 +115,7 @@ class TextSerializationWriter implements SerializationWriter
      */
     public function writeCollectionOfObjectValues(?string $key, ?array $values): void
     {
-        throw new \RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
+        throw new RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
     }
 
     /**
@@ -119,7 +123,7 @@ class TextSerializationWriter implements SerializationWriter
      */
     public function writeObjectValue(?string $key, ?Parsable $value, ?Parsable ...$additionalValuesToMerge): void
     {
-        throw new \RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
+        throw new RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
     }
 
     /**
@@ -136,7 +140,7 @@ class TextSerializationWriter implements SerializationWriter
      */
     public function writeCollectionOfEnumValues(?string $key, ?array $values): void
     {
-        throw new \RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
+        throw new RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
     }
 
     /**
@@ -162,7 +166,7 @@ class TextSerializationWriter implements SerializationWriter
      */
     public function writeAdditionalData(?array $value): void
     {
-        throw new \RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
+        throw new RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
     }
 
     /**
@@ -186,9 +190,8 @@ class TextSerializationWriter implements SerializationWriter
      */
     public function writeDateIntervalValue(?string $key, ?DateInterval $value): void
     {
-        if ($value) {
-            $valueString = "P{$value->y}Y{$value->y}M{$value->d}DT{$value->h}H{$value->i}M{$value->s}S";
-            $this->writeStringValue($key, $valueString);
+        if ($value !== null){
+            $this->writeStringValue($key, $this->getDateIntervalValueAsString($value));
         }
     }
 
@@ -197,7 +200,7 @@ class TextSerializationWriter implements SerializationWriter
      */
     public function writeCollectionOfPrimitiveValues(?string $key, ?array $value): void
     {
-        throw new \RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
+        throw new RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
     }
 
     /**
@@ -205,7 +208,7 @@ class TextSerializationWriter implements SerializationWriter
      */
     public function writeAnyValue(?string $key, $value): void
     {
-        throw new \RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
+        throw new RuntimeException(TextParseNode::NO_STRUCTURED_DATA_ERR_MSG);
     }
 
     /**
@@ -215,6 +218,9 @@ class TextSerializationWriter implements SerializationWriter
     {
         if ($value) {
             $this->writeStringValue($key, $value->getContents());
+            if ($value->isSeekable()) {
+                $value->rewind();
+            }
         }
     }
 
