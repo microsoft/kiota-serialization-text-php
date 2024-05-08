@@ -15,6 +15,7 @@ use GuzzleHttp\Psr7\Utils;
 use Microsoft\Kiota\Abstractions\Enum;
 use Microsoft\Kiota\Abstractions\Serialization\Parsable;
 use Microsoft\Kiota\Abstractions\Serialization\ParseNode;
+use Microsoft\Kiota\Abstractions\Serialization\ParseNodeFromStringTrait;
 use Microsoft\Kiota\Abstractions\Types\Date;
 use Microsoft\Kiota\Abstractions\Types\Time;
 use Psr\Http\Message\StreamInterface;
@@ -30,6 +31,7 @@ use Psr\Http\Message\StreamInterface;
  */
 class TextParseNode implements ParseNode
 {
+    use ParseNodeFromStringTrait;
     /**
      * @var string Content of the root node
      */
@@ -146,7 +148,7 @@ class TextParseNode implements ParseNode
      */
     public function getDateIntervalValue(): ?DateInterval
     {
-        return new DateInterval($this->content);
+        return $this->parseDateIntervalFromString($this->content);
     }
 
     /**
