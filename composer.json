@@ -10,8 +10,8 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "microsoft/kiota-abstractions": "^1.5.2",
+        "php": "^8.2",
+        "microsoft/kiota-abstractions": "^2.0.0",
         "guzzlehttp/psr7": "^1.6 || ^2"
     },
     "require-dev": {
